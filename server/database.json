@@ -1,0 +1,307 @@
+{
+  "users": [
+    {
+      "_id": "user-admin",
+      "fullName": "مدیر ارشد سیستم",
+      "username": "admin",
+      "password": "$2a$10$ByV/Cbj5f7iJA4Tai5p6ber/uJ4CIT8YNwtniREkpdjfCerjVTRQu",
+      "role": "admin",
+      "isVerified": true,
+      "level": "نامشخص",
+      "createdAt": "2026-06-12T17:50:22.670Z"
+    },
+    {
+      "_id": "user-normal",
+      "fullName": "علی محمدی",
+      "username": "ali",
+      "password": "$2a$10$nooQN4Qm5IzrhUl2R97xcOgWOD0hdc14pZ6SDW6Vgnts2kPvPMcby",
+      "role": "user",
+      "isVerified": true,
+      "level": "B2",
+      "createdAt": "2026-06-12T17:50:22.670Z"
+    },
+    {
+      "_id": "user-sara",
+      "fullName": "سارا احمدی",
+      "username": "sara",
+      "password": "$2a$10$nooQN4Qm5IzrhUl2R97xcOgWOD0hdc14pZ6SDW6Vgnts2kPvPMcby",
+      "role": "user",
+      "isVerified": false,
+      "level": "A1",
+      "createdAt": "2026-06-12T17:50:22.670Z"
+    }
+  ],
+  "tests": [
+    {
+      "_id": "test-1",
+      "title": "آزمون تعیین سطح جامع انگلیسی",
+      "description": "این آزمون مهارت‌های گرامر، دایره واژگان و درک مطلب پیشرفته شما را سنجیده و سطح نهایی شما را بر اساس استاندارد بین‌المللی CEFR از A1 تا C2 مشخص می‌کند.",
+      "duration": 45,
+      "isActive": true,
+      "questions": [
+        {
+          "questionText": "I _____ to the grocery store yesterday morning.",
+          "options": [
+            "go",
+            "went",
+            "gone",
+            "going"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "We have lived in London _____ over ten years now.",
+          "options": [
+            "since",
+            "for",
+            "during",
+            "at"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "If he _____ more carefully, he wouldn't have crashed the car.",
+          "options": [
+            "drove",
+            "drives",
+            "had driven",
+            "was driving"
+          ],
+          "correctAnswerIndex": 2
+        },
+        {
+          "questionText": "The project was completed on time _____ the tight budget and resources.",
+          "options": [
+            "although",
+            "despite",
+            "even though",
+            "because"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "By the time the manager arrived, the employees _____ the presentation.",
+          "options": [
+            "finished",
+            "were finishing",
+            "had finished",
+            "finish"
+          ],
+          "correctAnswerIndex": 2
+        },
+        {
+          "questionText": "She suggested _____ a short break before starting the next session.",
+          "options": [
+            "taking",
+            "to take",
+            "take",
+            "took"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "Hardly _____ entered the meeting room when the power went out.",
+          "options": [
+            "I had",
+            "had I",
+            "did I",
+            "was I"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "You can borrow my car as long as you promise _____ responsibly.",
+          "options": [
+            "to drive",
+            "driving",
+            "drive",
+            "drove"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "The company decided to __________ the new employee feedback system next month.",
+          "options": [
+            "implement",
+            "implementing",
+            "implementation",
+            "implemented"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "They have three daughters, all of _____ are currently studying abroad.",
+          "options": [
+            "who",
+            "which",
+            "whom",
+            "whose"
+          ],
+          "correctAnswerIndex": 2
+        }
+      ],
+      "createdAt": "2026-06-12T17:50:22.451Z"
+    },
+    {
+      "_id": "test-2",
+      "title": "آزمون مهارت شنیداری و درک مطلب عمومی (B2)",
+      "description": "این آزمون برای ارزیابی مهارت درک مطلب و گرامر در سطح متوسط به بالا (B2) طراحی شده است و به شما کمک می‌کند آمادگی خود را بسنجید.",
+      "duration": 20,
+      "isActive": true,
+      "questions": [
+        {
+          "questionText": "I don't mind _____ overtime as long as I get paid accordingly.",
+          "options": [
+            "to work",
+            "working",
+            "work",
+            "worked"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "I wish I _____ harder when I was at university; it would help my career.",
+          "options": [
+            "studied",
+            "have studied",
+            "had studied",
+            "might study"
+          ],
+          "correctAnswerIndex": 2
+        },
+        {
+          "questionText": "The lecture _____ by the time we reached the main auditorium.",
+          "options": [
+            "already started",
+            "had already started",
+            "has already started",
+            "was starting"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "This is the hospital _____ my father worked for over thirty years.",
+          "options": [
+            "which",
+            "who",
+            "where",
+            "that"
+          ],
+          "correctAnswerIndex": 2
+        },
+        {
+          "questionText": "Unless it _____ raining soon, we will have to cancel the outdoor ceremony.",
+          "options": [
+            "stops",
+            "stopped",
+            "will stop",
+            "is stopping"
+          ],
+          "correctAnswerIndex": 0
+        }
+      ],
+      "createdAt": "2026-06-12T17:50:22.451Z"
+    },
+    {
+      "_id": "test-3",
+      "title": "آزمون گرامر پیشرفته (C1/C2)",
+      "description": "یک آزمون سریع و فشرده برای سنجش گرامرهای ساختاری و نوشتاری پیشرفته زبان انگلیسی مناسب اساتید و زبان‌آموزان فوق حرفه‌ای.",
+      "duration": 15,
+      "isActive": true,
+      "questions": [
+        {
+          "questionText": "Were it not _____ your timely advice, we would have lost the contract.",
+          "options": [
+            "for",
+            "with",
+            "by",
+            "of"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "She would rather _____ to the conference instead of staying at the office.",
+          "options": [
+            "have gone",
+            "to go",
+            "going",
+            "go"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "No sooner had he left the office __________ the phone started ringing continuously.",
+          "options": [
+            "when",
+            "than",
+            "then",
+            "until"
+          ],
+          "correctAnswerIndex": 1
+        },
+        {
+          "questionText": "He spoke with such authority that everyone believed him, _____ of his actual expertise.",
+          "options": [
+            "regardless",
+            "in spite",
+            "despite",
+            "although"
+          ],
+          "correctAnswerIndex": 0
+        },
+        {
+          "questionText": "I would appreciate _____ if you could keep this matter strictly confidential.",
+          "options": [
+            "it",
+            "you",
+            "that",
+            "this"
+          ],
+          "correctAnswerIndex": 0
+        }
+      ],
+      "createdAt": "2026-06-12T17:50:22.451Z"
+    }
+  ],
+  "attempts": [
+    {
+      "_id": "attempt-1",
+      "userId": "user-normal",
+      "testId": "test-1",
+      "answers": [
+        1,
+        1,
+        2,
+        1,
+        2,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "correctAnswers": 9,
+      "totalQuestions": 10,
+      "score": 90,
+      "level": "C1",
+      "createdAt": "2026-06-07T17:50:22.670Z"
+    },
+    {
+      "_id": "attempt-2",
+      "userId": "user-normal",
+      "testId": "test-2",
+      "answers": [
+        1,
+        2,
+        1,
+        2,
+        0
+      ],
+      "correctAnswers": 5,
+      "totalQuestions": 5,
+      "score": 100,
+      "level": "B2",
+      "createdAt": "2026-06-10T17:50:22.670Z"
+    }
+  ]
+}

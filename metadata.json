@@ -1,0 +1,6 @@
+{
+  "name": "English Pro",
+  "description": "English Placement Test Platform with persistent student dashboards, real-time timed assessments, and administrative controls (fully RTL and Persian-ready).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
