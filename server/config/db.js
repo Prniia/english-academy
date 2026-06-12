@@ -219,7 +219,11 @@ function readDB() {
 
 // Write File DB
 function writeDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+  } catch (err) {
+    console.error("Warning: DB_FILE is not writable (expected in read-only environments like serverless Vercel when MongoDB is not configured):", err.message);
+  }
 }
 
 // Simple filter helper for Mongoose-like matching
