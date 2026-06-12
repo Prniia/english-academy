@@ -14,18 +14,18 @@ const generateToken = (id, role) => {
 exports.register = async (req, res) => {
   try {
     const { fullName, username, password } = req.body;
-    
+
     if (!fullName || !username || !password) {
       return res.status(400).json({ message: "همه فیلدها الزامی هستند" });
     }
-    
+
     if (password.length < 6) {
       return res.status(400).json({ message: "رمز عبور باید حداقل ۶ کاراکتر باشد" });
     }
 
     const normalizedUsername = username.trim().toLowerCase();
     const existingUser = await User.findOne({ username: normalizedUsername });
-    
+
     if (existingUser) {
       return res.status(400).json({ message: "این نام کاربری قبلاً ثبت شده است" });
     }
@@ -34,6 +34,8 @@ exports.register = async (req, res) => {
       fullName: fullName.trim(),
       username: normalizedUsername,
       password, // Password hashing is handled by pre-save middleware in Model
+      role: req.body.role || "user",
+      isVerified: req.body.isVerified !== undefined ? req.body.isVerified : false,
     });
 
     const token = generateToken(user._id, user.role);
