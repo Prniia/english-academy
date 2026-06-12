@@ -41,30 +41,35 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Embedded Vite Integration for React Client
-if (process.env.NODE_ENV !== "production") {
-  import("vite").then(({ createServer: createViteServer }) => {
-    createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    }).then((vite) => {
-      app.use(vite.middlewares);
+// Export app for serverless environment (like Vercel)
+module.exports = app;
 
-      app.listen(PORT, "0.0.0.0", () => {
-        console.log(`English Placement Test full-stack app running in Dev Mode on port ${PORT}`);
+if (!process.env.VERCEL) {
+  // Embedded Vite Integration for React Client
+  if (process.env.NODE_ENV !== "production") {
+    import("vite").then(({ createServer: createViteServer }) => {
+      createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      }).then((vite) => {
+        app.use(vite.middlewares);
+        
+        app.listen(PORT, "0.0.0.0", () => {
+          console.log(`English Placement Test full-stack app running in Dev Mode on port ${PORT}`);
+        });
       });
+    }).catch((err) => {
+      console.error("Failed to start Vite server:", err);
     });
-  }).catch((err) => {
-    console.error("Failed to start Vite server:", err);
-  });
-} else {
-  const distPath = path.join(process.cwd(), "dist");
-  app.use(express.static(distPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(distPath, "index.html"));
-  });
+  } else {
+    const distPath = path.join(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`English Placement Test full-stack app running in Production Mode on port ${PORT}`);
-  });
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`English Placement Test full-stack app running in Production Mode on port ${PORT}`);
+    });
+  }
 }
