@@ -401,6 +401,10 @@ mongoose.model = function (modelName, schema) {
       return bcrypt.compareSync(enteredPassword, passwordHash);
     }
 
+    toObject() {
+      return { ...this };
+    }
+
     // Static Query methods:
     static find(query) {
       if (isMongoConnected()) {
