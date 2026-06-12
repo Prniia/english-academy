@@ -43,16 +43,19 @@ app.use((err, req, res, next) => {
 
 // Embedded Vite Integration for React Client
 if (process.env.NODE_ENV !== "production") {
-  const { createServer: createViteServer } = require("vite");
-  createViteServer({
-    server: { middlewareMode: true },
-    appType: "spa",
-  }).then((vite) => {
-    app.use(vite.middlewares);
-    
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`English Placement Test full-stack app running in Dev Mode on port ${PORT}`);
+  import("vite").then(({ createServer: createViteServer }) => {
+    createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    }).then((vite) => {
+      app.use(vite.middlewares);
+
+      app.listen(PORT, "0.0.0.0", () => {
+        console.log(`English Placement Test full-stack app running in Dev Mode on port ${PORT}`);
+      });
     });
+  }).catch((err) => {
+    console.error("Failed to start Vite server:", err);
   });
 } else {
   const distPath = path.join(process.cwd(), "dist");
@@ -65,4 +68,3 @@ if (process.env.NODE_ENV !== "production") {
     console.log(`English Placement Test full-stack app running in Production Mode on port ${PORT}`);
   });
 }
-
