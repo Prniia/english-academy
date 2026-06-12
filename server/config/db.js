@@ -263,14 +263,41 @@ function writeDB(data) {
 function filterCollection(collection, query) {
   if (!query || Object.keys(query).length === 0) return collection;
   return collection.filter(item => {
+    // Support MongoDB style $or query
+    if (query.$or && Array.isArray(query.$or)) {
+      const anyMatch = query.$or.some(subQuery => {
+        for (const subKey in subQuery) {
+          let itemVal = item[subKey];
+          let subVal = subQuery[subKey];
+
+          if (itemVal === undefined || itemVal === null) continue;
+
+          // Regex query support
+          if (subVal && typeof subVal === "object" && (subVal.$regex !== undefined)) {
+            const regex = new RegExp(subVal.$regex, subVal.$options || "");
+            if (regex.test(itemVal.toString())) {
+              return true;
+            }
+          } else {
+            if (itemVal.toString().toLowerCase() === subVal.toString().toLowerCase()) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
+      if (!anyMatch) return false;
+    }
+
     for (const key in query) {
+      if (key === "$or") continue;
       let val = query[key];
       let itemVal = item[key];
-      
+
       // Match ID representations
       if (key === "_id" && itemVal && itemVal.toString) itemVal = itemVal.toString();
       if (key === "_id" && val && val.toString) val = val.toString();
-      
+
       if (key === "username" && itemVal) itemVal = itemVal.toString().toLowerCase();
       if (key === "username" && val) val = val.toString().toLowerCase();
 
@@ -299,7 +326,7 @@ class MockQuery {
 
       const populateObj = (obj) => {
         if (!obj) return obj;
-        
+
         // Populate testId
         if (field === "testId" || field === "testId") {
           let tId = obj.testId;
@@ -335,13 +362,13 @@ class MockQuery {
     return new MockQuery(populatePromise);
   }
   select() { return this; }
-  sort(criteria) { 
+  sort(criteria) {
     const sortedPromise = this.promise.then(data => {
       if (!Array.isArray(data)) return data;
       // Sort by createdAt descending by default or match any sort logic
       return data.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     });
-    return new MockQuery(sortedPromise); 
+    return new MockQuery(sortedPromise);
   }
   skip() { return this; }
   limit() { return this; }
