@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 
-const DB_FILE = path.join(__dirname, "..", "database.json");
+const DB_FILE = process.env.VERCEL ? "/tmp/database.json" : path.join(__dirname, "..", "database.json");
 
 // Default tests copy from root deployment
 const defaultTests = [
@@ -139,72 +139,105 @@ const defaultTests = [
   }
 ];
 
+// Helper to seed the database
+function getInitialDB() {
+  const adminPasswordHash = bcrypt.hashSync("admin123", 10);
+  const userPasswordHash = bcrypt.hashSync("user123", 10);
+  return {
+    users: [
+      {
+        _id: "user-admin",
+        fullName: "مدیر ارشد سیستم",
+        username: "admin",
+        password: adminPasswordHash,
+        role: "admin",
+        isVerified: true,
+        level: "نامشخص",
+        createdAt: new Date().toISOString()
+      },
+      {
+        _id: "user-normal",
+        fullName: "علی محمدی",
+        username: "ali",
+        password: userPasswordHash,
+        role: "user",
+        isVerified: true,
+        level: "B2",
+        createdAt: new Date().toISOString()
+      },
+      {
+        _id: "user-sara",
+        fullName: "سارا احمدی",
+        username: "sara",
+        password: userPasswordHash,
+        role: "user",
+        isVerified: false,
+        level: "A1",
+        createdAt: new Date().toISOString()
+      }
+    ],
+    tests: defaultTests,
+    attempts: [
+      {
+        _id: "attempt-1",
+        userId: "user-normal",
+        testId: "test-1",
+        answers: [1, 1, 2, 1, 2, 0, 1, 0, 0, 1],
+        correctAnswers: 9,
+        totalQuestions: 10,
+        score: 90,
+        level: "C1",
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000 * 5).toISOString()
+      },
+      {
+        _id: "attempt-2",
+        userId: "user-normal",
+        testId: "test-2",
+        answers: [1, 2, 1, 2, 0],
+        correctAnswers: 5,
+        totalQuestions: 5,
+        score: 100,
+        level: "B2",
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000 * 2).toISOString()
+      }
+    ]
+  };
+}
+
 // Read File DB
 function readDB() {
-  if (!fs.existsSync(DB_FILE)) {
-    const adminPasswordHash = bcrypt.hashSync("admin123", 10);
-    const userPasswordHash = bcrypt.hashSync("user123", 10);
+  // On Vercel, if DB_FILE is in /tmp and doesn't exist, try to copy it from the bundled server directory template
+  if (process.env.VERCEL && DB_FILE === "/tmp/database.json") {
+    if (!fs.existsSync(DB_FILE)) {
+      const templatePath = path.join(__dirname, "..", "database.json");
+      if (fs.existsSync(templatePath)) {
+        try {
+          fs.copyFileSync(templatePath, DB_FILE);
+        } catch (copyErr) {
+          console.error("Failed to copy database template to /tmp, will write standard database instead:", copyErr);
+          try {
+            fs.writeFileSync(DB_FILE, JSON.stringify(getInitialDB(), null, 2), "utf-8");
+          } catch (writeErr) {
+            console.error("Failed to write to /tmp/database.json directly:", writeErr);
+          }
+        }
+      } else {
+        try {
+          fs.writeFileSync(DB_FILE, JSON.stringify(getInitialDB(), null, 2), "utf-8");
+        } catch (writeErr) {
+          console.error("Failed to write initial DB fallback to /tmp/database.json:", writeErr);
+        }
+      }
+    }
+  }
 
-    const initialDB = {
-      users: [
-        {
-          _id: "user-admin",
-          fullName: "مدیر ارشد سیستم",
-          username: "admin",
-          password: adminPasswordHash,
-          role: "admin",
-          isVerified: true,
-          level: "نامشخص",
-          createdAt: new Date().toISOString()
-        },
-        {
-          _id: "user-normal",
-          fullName: "علی محمدی",
-          username: "ali",
-          password: userPasswordHash,
-          role: "user",
-          isVerified: true,
-          level: "B2",
-          createdAt: new Date().toISOString()
-        },
-        {
-          _id: "user-sara",
-          fullName: "سارا احمدی",
-          username: "sara",
-          password: userPasswordHash,
-          role: "user",
-          isVerified: false,
-          level: "A1",
-          createdAt: new Date().toISOString()
-        }
-      ],
-      tests: defaultTests,
-      attempts: [
-        {
-          _id: "attempt-1",
-          userId: "user-normal",
-          testId: "test-1",
-          answers: [1, 1, 2, 1, 2, 0, 1, 0, 0, 1],
-          correctAnswers: 9,
-          totalQuestions: 10,
-          score: 90,
-          level: "C1",
-          createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000 * 5).toISOString()
-        },
-        {
-          _id: "attempt-2",
-          userId: "user-normal",
-          testId: "test-2",
-          answers: [1, 2, 1, 2, 0],
-          correctAnswers: 5,
-          totalQuestions: 5,
-          score: 100,
-          level: "B2",
-          createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000 * 2).toISOString()
-        }
-      ]
-    };
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialDB, null, 2), "utf-8");
+  if (!fs.existsSync(DB_FILE)) {
+    const initialDB = getInitialDB();
+    try {
+      fs.writeFileSync(DB_FILE, JSON.stringify(initialDB, null, 2), "utf-8");
+    } catch (err) {
+      console.error("Warning: DB_FILE is not writable (will return initial DB objects in-memory):", err.message);
+    }
     return initialDB;
   }
 
@@ -222,7 +255,7 @@ function writeDB(data) {
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
   } catch (err) {
-    console.error("Warning: DB_FILE is not writable (expected in read-only environments like serverless Vercel when MongoDB is not configured):", err.message);
+    console.error("Warning: DB_FILE is not writable:", err.message);
   }
 }
 
