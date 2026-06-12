@@ -25,6 +25,11 @@ exports.getUsersList = async (req, res) => {
       .limit(limit)
       .sort({ createdAt: -1 });
 
+    const allUsersList = await User.find({});
+    const totalUsersCount = allUsersList.length;
+    const verifiedUsersCount = allUsersList.filter((u) => u.isVerified && u.role === "user").length;
+    const adminUsersCount = allUsersList.filter((u) => u.role === "admin").length;
+
     const formattedUsers = users.map((u) => ({
       id: u._id,
       fullName: u.fullName,
@@ -41,6 +46,11 @@ exports.getUsersList = async (req, res) => {
       totalPages: Math.ceil(totalUsers / limit),
       totalUsers,
       users: formattedUsers,
+      stats: {
+        totalUsers: totalUsersCount,
+        verifiedUsers: verifiedUsersCount,
+        adminUsers: adminUsersCount
+      }
     });
   } catch (error) {
     res.status(500).json({ message: "خطا در دریافت لیست کاربران", error: error.message });
