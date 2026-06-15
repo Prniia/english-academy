@@ -26,9 +26,15 @@ exports.getUsersList = async (req, res) => {
       .sort({ createdAt: -1 });
 
     const allUsersList = await User.find({});
-    const totalUsersCount = allUsersList.length;
-    const verifiedUsersCount = allUsersList.filter((u) => u.isVerified && u.role === "user").length;
-    const adminUsersCount = allUsersList.filter((u) => u.role === "admin").length;
+    // Filter out default users from database to prevent double counting
+    const customUsers = allUsersList.filter((u) => {
+      const uname = (u.username || "").toLowerCase().trim();
+      return uname !== "admin" && uname !== "ali" && uname !== "sara";
+    });
+
+    const totalUsersCount = customUsers.length + 3; // admin, ali, sara
+    const verifiedUsersCount = customUsers.filter((u) => u.isVerified && u.role === "user").length + 2; // ali, sara (counted as verified normal users)
+    const adminUsersCount = customUsers.filter((u) => u.role === "admin").length + 1; // admin
 
     const formattedUsers = users.map((u) => ({
       id: u._id,
