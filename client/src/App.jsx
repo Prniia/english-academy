@@ -276,6 +276,9 @@ export default function App() {
 
   // Pre-fill fields for easy evaluation
   const setQuickFill = (role) => {
+    setAuthMode('login');
+    setErrorMsg('');
+    setSuccessMsg('');
     if (role === 'admin') {
       setLoginUsername('admin');
       setLoginPassword('admin123');
@@ -1237,8 +1240,13 @@ export default function App() {
             <aside className="w-full md:w-80 bg-[#edf2f9] border-l border-[#cfd7e3] p-6 flex flex-col justify-between shrink-0" id="student-sidebar">
               <div className="flex flex-col gap-6">
                 {/* Brand Title */}
-                <div className="text-right">
-                  <h1 className="text-2xl font-black text-[#0a1e50] tracking-tight">English Pro</h1>
+                <div className="text-right select-none">
+                  <h1
+                    onClick={() => setCurrentPage('home')}
+                    className="text-2xl font-black text-[#0a1e50] tracking-tight hover:opacity-85 active:scale-[0.98] cursor-pointer transition-all inline-block"
+                  >
+                    English Pro
+                  </h1>
                 </div>
 
                 {/* Profile Box */}
@@ -1581,8 +1589,13 @@ export default function App() {
             <aside className="w-full md:w-80 bg-[#edf2f9] border-l border-[#cfd7e3] p-6 flex flex-col justify-between shrink-0" id="admin-sidebar">
               <div className="flex flex-col gap-6">
                 {/* Brand Logo & Subtitle */}
-                <div className="text-right">
-                  <h1 className="text-2xl font-black text-[#0d1e43] tracking-tight">English Pro</h1>
+                <div className="text-right select-none">
+                  <h1
+                    onClick={() => setCurrentPage('home')}
+                    className="text-2xl font-black text-[#0d1e43] tracking-tight hover:opacity-85 active:scale-[0.98] cursor-pointer transition-all inline-block"
+                  >
+                    English Pro
+                  </h1>
                   <span className="text-xs text-gray-400 font-bold block mt-1">پنل مدیریت سایت</span>
                 </div>
 
