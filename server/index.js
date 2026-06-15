@@ -47,7 +47,8 @@ module.exports = app;
 if (!process.env.VERCEL) {
   // Embedded Vite Integration for React Client
   if (process.env.NODE_ENV !== "production") {
-    import("vite").then(({ createServer: createViteServer }) => {
+    const viteModuleName = "vite";
+    import(viteModuleName).then(({ createServer: createViteServer }) => {
       createViteServer({
         server: { middlewareMode: true },
         appType: "spa",
